@@ -25,9 +25,9 @@ app.use(express.static('website'));
 const port = 3000;
 const server = app.listen(port,listening);
 
-app.get('/',function (req,res) {
+/*app.get('/',function (req,res) {
   res.send('hello world');
-});
+});*/
 
 function listening() {
   console.log("serveur running");
@@ -43,7 +43,7 @@ function getData(req, res) {
 }
 
 // Setup POST routes
-app.post('/addInfo', addInfo);
+app.post('/add', addInfo); // avant addInfo
 
 function addInfo(req, res) {
   console.log(req.body);

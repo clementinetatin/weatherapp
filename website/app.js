@@ -11,12 +11,16 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 document.getElementById('generate').addEventListener('click',performAction);
 
 function performAction(e) {
+  e.preventDefault();
   const zip = document.getElementById('zip').value;
   const content = document.getElementById('content').value;
 
   getWeather(baseURL, zip, apiKey)
-    .then(function(data) {
-      postData('/add', {date : newDate, temp : data.temp, content : data.content})
+    .then(function(projectData) {   //avant data
+      postData('/add', {
+        date : newDate,
+        temp : data.temp,
+        content : data.content})
       // update UI to call brower update
       updateUI()
     });
@@ -67,5 +71,3 @@ const updateUI = async() => {
     console.log("error in update UI", error);
   }
 }
-
-// jusque là ok //
