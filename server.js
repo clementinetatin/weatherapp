@@ -35,7 +35,7 @@ function listening() {
 };
 
 // Setup GET routes
-//const infoData = [];
+const data = [];
 app.get('/all',getData)
 function getData(req, res) {
   res.send(projectData)
@@ -48,7 +48,7 @@ app.post('/add', addInfo); // avant addInfo
 function addInfo(req, res) {
   console.log(req.body);
 
-  newEntry = {
+  let newEntry = {
     temp : req.body.temp,
     date : req.body.date,
     content : req.body.content
@@ -56,5 +56,5 @@ function addInfo(req, res) {
 
   projectData.push(newEntry)
   res.send(projectData)
-  console.log(projectData)
+  console.log(projectData)  // ou newEntry
 }

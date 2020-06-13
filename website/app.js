@@ -1,6 +1,8 @@
 /* Global Variables */
-let baseURL = 'http://api.openweathermap.org/data/?'
+let baseURL = 'api.openweathermap.org/data/2.5/weather?zipCode=';
 let apiKey = '9a04e7a51c4c5dead4da8a1213fe268b';
+const zipCode = document.getElementById('zip').value;
+
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -12,11 +14,10 @@ document.getElementById('generate').addEventListener('click',performAction);
 
 function performAction(e) {
   e.preventDefault();
-  const zip = document.getElementById('zip').value;
   const content = document.getElementById('content').value;
 
   getWeather(baseURL, zip, apiKey)
-    .then(function(projectData) {   //avant data
+    .then(function(data) {
       postData('/add', {
         date : newDate,
         temp : data.temp,
@@ -27,10 +28,10 @@ function performAction(e) {
 };
 
 // GET the infos from the openweathermap API
-const getWeather = async (baseURL, zip, apiKey) => {
-  const weatherRes = await fetch(baseURL, zip, apiKey);
+const getWeather = async (baseURL, zipCode, apiKey) => {
+  const res = await fetch(baseURL + zipCode + apiKey); // avant : ,
   try {
-    const data = await weatherRes.json();
+    const data = await res.json();
     console.log(data)
     return data;
   } catch(error) {
@@ -40,7 +41,7 @@ const getWeather = async (baseURL, zip, apiKey) => {
 // ASYNC POST function to get the datas from our server ==> à voir si ne pas mettre à la fin
 const postData = async (url='', data = {}) => {
   console.log(data);
-  const response = await fetch(url, {
+  const response = await fetch(url, { //'http://localhost:3000/add'
     method : 'POST',
     credentials : 'same-origin',
     headers : {
@@ -60,13 +61,14 @@ const postData = async (url='', data = {}) => {
 
 // UPDATE UI
 const updateUI = async() => {
-  const request = await fetch('/all')
+  const request = await fetch('/all');
   try {
     const allData = await request.json()
-    console.log(allData);
-    document.getElementById('date').innerHTML = allData[0].date;
-    document.getElementById('temp').innerHTML = allData[0].temp;
-    document.getElementById('content').innerHTML = allData[0].content;
+    console.log(allData)
+    // var index = Object.keys(allData).length -1;
+    document.getElementById('date').innerHTML = 'Today is '+ allData[0].date; // dans ce cas remplacer 0 par index
+    document.getElementById('temp').innerHTML = 'The temperatrure is ' + allData[0].temp;
+    document.getElementById('content').innerHTML = 'And I feel ' + allData[0].content;
   } catch(error) {
     console.log("error in update UI", error);
   }
